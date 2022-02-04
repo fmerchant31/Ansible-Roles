@@ -1,0 +1,6 @@
+---
+- name: Creating new Directory
+  file:
+    dest: /home/devx/Desktop/Fatema
+    state: directory
+
