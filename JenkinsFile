@@ -1,0 +1,41 @@
+properties([parameters([choice(choices: ['mkdir','lacework','febrole'], description: 'select playbook to execute', name: 'playbook')])])
+pipeline{
+    agent any
+    stages{
+        stage('Checkout external proj') {
+            steps {
+                git branch: 'master',
+                    credentialsId: 'dfe2eda4-02bd-427b-8e13-749bdfa4f5db',
+                    url: 'git@github.com:fmerchant31/Ansible-Roles.git'
+                sh "ls -lh"
+            }
+        }
+        stage("mkdir"){
+            steps{
+                script{
+                    if(params.playbook == 'mkdir'){
+                    sh 'ansible-playbook mkdir.yml'
+                    }
+                }
+            }
+        }
+         stage("lacework"){
+            steps{
+                script{
+                    if(params.playbook == 'lacework'){
+                     sh 'ansible-playbook test.yml'
+                    }
+                }
+            } 
+        }
+        stage("febrole"){
+            steps{
+                script{
+                    if(params.playbook == 'febrole'){
+                    sh 'ansible-playbook febrole.yml'
+                    }
+                }
+            }
+        }
+    }
+}
